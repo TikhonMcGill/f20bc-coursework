@@ -1,6 +1,5 @@
 import math
 import numpy as n
-import pandas as p
 
 def activation_logistic(input):
     return (1 + (math.e ** -input)) ** -1
