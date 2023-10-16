@@ -17,12 +17,23 @@ class NeuralNetwork:
         self.biases = [np.zeros((1, size)) for size in layer_sizes[1:]]
 
     def forward_propogation(self,input):
-        # Plan for forward propagation:
+        #Ensure that the input given is of the same size as the input vector size
+        if len(input) != self.input_vector_size:
+            print ("Input given is not the size of input vector size!")
+            return
+        
         # 1. Organize inputs from previous layer (or just inputs) as a column vector
-        # 2. Organize Weights in the previous layer as a matrix, where each row represents all the connections from
-        # every previous neuron to one neuron
-        # 3. Multiply the Input Vector by the Weight Matrix, getting a Vector as an output
-        # 4. Organize the Biases as a column vector
-        # 5. Add the Bias Vector to the Output Vector
-        # 6. Apply the Activation function to each component of the Output vector
+        input_vector = np.array(input)
+        
+        # 2. TODO Organize Weights between the previous layer's neurons and this layer's neurons as a matrix, each row 
+        # representing all connections from every previous neuron to one neuron per row
+        
+        # 3. TODO Multiply the Input Vector by the Weight Matrix, getting a Vector as an output
+        
+        # 4. TODO Organize the Biases as a column vector
+        
+        # 5. TODO Add the Bias Vector to the Output Vector
+        
+        # 6. TODO Apply the Activation function to each component of the Output vector
+        
         return print("Not implemented yet")
