@@ -1,10 +1,10 @@
 import numpy as np
 import hyperparameter_profile as hp
 #Neural network class with adjustable number of hidden layers and number of neurons
-class NuralNetwork:
+class NeuralNetwork:
     #Only needed parameters to create the neural network are input size and number of neurons in the output layer
-    #both of witch will be dependant on the dataset and will be fixed based on that
-    #The number of neuron in the hidden layers and the number of hidden layers as well as the activation function are all adjusted in the profile file
+    #both of which will be dependent on the dataset and will be fixed based on that
+    #The number of neurons in the hidden layers and the number of hidden layers as well as the activation function are all adjusted in the profile file
     def __init__(self, input_vector_size, output_layer):
         self.input_vector_size = input_vector_size
         self.hidden_layers, self.activation_function  = hp.profile1()
