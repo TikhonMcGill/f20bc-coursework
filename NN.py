@@ -1,5 +1,6 @@
 import numpy as np
 import hyperparameter_profile as hp
+
 #Neural network class with adjustable number of hidden layers and number of neurons
 class NeuralNetwork:
     #Only needed parameters to create the neural network are input size and number of neurons in the output layer
@@ -16,4 +17,12 @@ class NeuralNetwork:
         self.biases = [np.zeros((1, size)) for size in layer_sizes[1:]]
 
     def forward_propogation(self,input):
+        # Plan for forward propagation:
+        # 1. Organize inputs from previous layer (or just inputs) as a column vector
+        # 2. Organize Weights in the previous layer as a matrix, where each row represents all the connections from
+        # every previous neuron to one neuron
+        # 3. Multiply the Input Vector by the Weight Matrix, getting a Vector as an output
+        # 4. Organize the Biases as a column vector
+        # 5. Add the Bias Vector to the Output Vector
+        # 6. Apply the Activation function to each component of the Output vector
         return print("Not implemented yet")
