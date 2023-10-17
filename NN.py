@@ -12,8 +12,12 @@ class NeuralNetwork:
         self.output_size = output_layer
         
         # Initialize the weights and biases for the layers
+
+        #1. Store the sizes of each layer in an array
         layer_sizes = [input_vector_size] + self.hidden_layers + [output_layer]
+        #2. Initialize random weights for each layer
         self.weights = [np.random.rand(layer_sizes[i], layer_sizes[i+1]) for i in range(len(layer_sizes) - 1)]
+        #3. Initialize an array of biases of 0 for each layer (except for the output layer)
         self.biases = [np.zeros((1, size)) for size in layer_sizes[1:]]
 
     def forward_propogation(self,input):
@@ -21,7 +25,7 @@ class NeuralNetwork:
         if len(input) != self.input_vector_size:
             print ("Input given is not the size of input vector size!")
             return
-        
+
         # 1. Organize inputs from previous layer (or just inputs) as a column vector
         input_vector = np.array(input)
         
