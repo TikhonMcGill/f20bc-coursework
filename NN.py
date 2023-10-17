@@ -56,7 +56,7 @@ class NeuralNetwork:
             # Each row in the matrix represents all connections to one neuron.
             # Therefore, we multiply each column in the neuron's row by the element in the input vector
             # Then, we add all of the products together - that is the total
-        
+
             # 4. TODO Organize the Biases as a column vector
         
             # 5. TODO Add the Bias Vector to the Output Vector
