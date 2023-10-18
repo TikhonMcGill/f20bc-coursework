@@ -1,6 +1,8 @@
 import numpy as np
 import hyperparameter_profile as hp
 
+##TODO - Being able to add different activation functions for each layer
+
 #Neural network class with adjustable number of hidden layers and number of neurons
 class NeuralNetwork:
     #Only needed parameters to create the neural network are input size and number of neurons in the output layer
