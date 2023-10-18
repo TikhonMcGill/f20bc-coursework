@@ -33,6 +33,8 @@ class NeuralNetwork:
         
         output_layer = len(self.layer_sizes) - 1 #Initialize an int for the output layer, for readability
 
+        output = -1 #Initialize a variable for output, which is -1 initially
+
         for layer in range(len(self.layer_sizes)):
             # 1. Organize inputs from previous layer (or just inputs) as a column vector
             if layer == 0:
@@ -43,24 +45,44 @@ class NeuralNetwork:
             else:
                 input_vector = np.array(previous_output)
 
-            if layer != output_layer:
-                output_vector = np.zeros((1,self.layer_sizes[layer+1])) #Create a column vector for the outputs
-            else:
-                output_vector = np.zeros((1,self.output_size)) #If the next layer is the output layer, create a 1 x Output Size matrix
-
             # 2. Organize Weights between the previous layer's neurons and this layer's neurons as a matrix, each row 
             # representing all connections from every previous neuron to one neuron per row
-            weight_matrix = self.weights[layer-1]
+            weight_matrix = self.weights[layer-1] #Get the weight matrix corresponding to the layer before this neuron
 
-            # 3. TODO Multiply the Input Vector by the Weight Matrix, getting a Vector as an output
+            # 3. Multiply the Input Vector by the Weight Matrix, getting a Vector as an output
             # Each row in the matrix represents all connections to one neuron.
             # Therefore, we multiply each column in the neuron's row by the element in the input vector
             # Then, we add all of the products together - that is the total
+            
+            # Transpose the Weight Matrix, so that we can do matrix multiplication
+            # (number of rows needs to equal size of output vector)
+            np.transpose(weight_matrix)
+            
+            if layer == output_layer:
+                #If we're at the output layer, the output is just the final product of weights and previous
+                #neurons' activation functions, so we set the output and break out of the loop
+                output = np.matmul(weight_matrix,input_vector)
+                break
+            else:
+                #Otherwise, we maintain the output vector, for work with biases etc.
+                output_vector = np.matmul(weight_matrix,input_vector)
 
-            # 4. TODO Organize the Biases as a column vector
-        
-            # 5. TODO Add the Bias Vector to the Output Vector
-        
-            # 6. TODO Apply the Activation function to each component of the Output vector
-        
-        return print("Not implemented yet")
+
+            # 4. Organize the Biases as a column vector
+            bias_vector = self.biases[layer]
+
+            # 5. Add the Bias Vector to the Output Vector
+            output_vector = np.add(output_vector,bias_vector)
+
+            # 6. Apply the Activation function to each component of the Output vector
+            activation_vector_func = np.vectorize(self.activation_function) #Create an array-based function using np.vectorize
+
+            output_vector = activation_vector_func(output_vector) #Apply the activation function to each element of output vector
+            
+            # 7. Set the next layer's previous output to be this layer's output
+            previous_output = output_vector 
+
+        if output == -1:
+            print("Warning! No output was calculated!")
+
+        return output
