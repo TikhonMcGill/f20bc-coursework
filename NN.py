@@ -10,19 +10,19 @@ class NeuralNetwork:
     #The number of neurons in the hidden layers and the number of hidden layers as well as the activation function are all adjusted in the profile file
     def __init__(self, input_vector_size, output_vector_size):
         self.input_vector_size = input_vector_size
-        self.hidden_layers, self.activation_function = hp.profile1()
-        self.output_size = output_vector_size
+        self.hidden_layers, self.activation_function = hp.profile2()
+        self.output_neurons = output_vector_size
         
         # Initialize the weights and biases for the layers
 
         #1. Store the sizes of each layer in an array
-        self.layer_sizes = [self.input_vector_size] + self.hidden_layers + [self.output_size]
+        self.layer_sizes = [self.input_vector_size] + self.hidden_layers + [self.output_neurons]
         #2. Initialize random weights for each layer
         self.weights = [np.random.rand(self.layer_sizes[i], self.layer_sizes[i+1]) for i in range(len(self.layer_sizes) - 1)]
         #3. Initialize an array of biases of 0 for each layer (except for the output layer)
         self.biases = [np.zeros((1, size)) for size in self.layer_sizes[1:]]
 
-    def forward_propogation(self,input):
+    def forward_propagation(self,input):
         #Ensure that the input given is of the same size as the input vector size
         if len(input) != self.input_vector_size:
             print ("Input given is not the size of input vector size!")
@@ -35,9 +35,10 @@ class NeuralNetwork:
         
         output_layer = len(self.layer_sizes) - 1 #Initialize an int for the output layer, for readability
 
-        output = -1 #Initialize a variable for output, which is -1 initially
+        #output = -1 #Initialize a variable for output, which is -1 initially
 
-        for layer in range(len(self.layer_sizes)):
+                            #We use the len of hidden layers as the input layer does not count
+        for layer in range(len(self.hidden_layers)):
             # 1. Organize inputs from previous layer (or just inputs) as a column vector
             if layer == 0:
                 previous_output = np.array(input)
@@ -87,4 +88,26 @@ class NeuralNetwork:
         if output == -1:
             print("Warning! No output was calculated!")
 
+        return output
+    
+    #my take on the forward propagation, feel free to add anything :)
+    def forward_propagation2(self,input):
+        #use the previous output to the input as that is what is being passed into the first hidden layer
+        prev_output = input
+
+        #do the matrix calculation over every hidden layer
+        for layer in range(len(self.hidden_layers)):
+            #multiply the weight and inputs(also outputs from previous layers) together
+            matrix_product = np.dot(prev_output,self.weights[layer])
+            #add the biases
+            matrix_total = np.add(matrix_product,self.biases[layer])
+            #apply the activation functiona and set the ouptput of this hidden layer to replace the previous output
+            prev_output = self.activation_function(matrix_total)   
+        #Now let's deal witht he final output layer
+        #same as before except we use the [-1] notation to get the final weights listed in self.weights(which wilkl belong to the output layer)
+        matrix_output_product = np.dot(prev_output, self.weights[-1])
+        #add the biases again using the last indexed biases
+        matrix_output_total = np.add(matrix_output_product, self.biases[-1])
+        #apply the activation function and set the output
+        output = self.activation_function(matrix_output_total)
         return output
