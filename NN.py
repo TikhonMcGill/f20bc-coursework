@@ -10,8 +10,9 @@ class NeuralNetwork:
     #The number of neurons in the hidden layers and the number of hidden layers as well as the activation function are all adjusted in the profile file
     def __init__(self, input_vector_size, output_vector_size):
         self.input_vector_size = input_vector_size
-        self.hidden_layers, self.activation_function = hp.profile2()
+        self.hidden_layers, self.activation_functions = hp.profile2()
         self.output_neurons = output_vector_size
+        
         
         # Initialize the weights and biases for the layers
 
@@ -78,7 +79,7 @@ class NeuralNetwork:
             output_vector = np.add(output_vector,bias_vector)
 
             # 6. Apply the Activation function to each component of the Output vector
-            activation_vector_func = np.vectorize(self.activation_function) #Create an array-based function using np.vectorize
+            activation_vector_func = np.vectorize(self.activation_functions) #Create an array-based function using np.vectorize
 
             output_vector = activation_vector_func(output_vector) #Apply the activation function to each element of output vector
             
@@ -101,13 +102,13 @@ class NeuralNetwork:
             matrix_product = np.dot(prev_output,self.weights[layer])
             #add the biases
             matrix_total = np.add(matrix_product,self.biases[layer])
-            #apply the activation functiona and set the ouptput of this hidden layer to replace the previous output
-            prev_output = self.activation_function(matrix_total)   
+            #apply the activation function and set the ouptput of this hidden layer to replace the previous output
+            prev_output = self.activation_functions[layer](matrix_total)   
         #Now let's deal witht he final output layer
         #same as before except we use the [-1] notation to get the final weights listed in self.weights(which wilkl belong to the output layer)
         matrix_output_product = np.dot(prev_output, self.weights[-1])
         #add the biases again using the last indexed biases
         matrix_output_total = np.add(matrix_output_product, self.biases[-1])
         #apply the activation function and set the output
-        output = self.activation_function(matrix_output_total)
+        output = self.activation_functions[-1](matrix_output_total)
         return output

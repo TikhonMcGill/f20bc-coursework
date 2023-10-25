@@ -15,7 +15,7 @@ def profile1():
 
 #Create profile with 2 hidden layers of 4 neurons each, utilizing the logistic activation function
 def profile2():
-    return profile([4,4],actfunc.activation_logistic)
+    return profile([4,4],[actfunc.activation_relu, actfunc.activation_relu, actfunc.activation_logistic])
 
 #Create profile with 2 hidden layers of 4 neurons each, utilizing the tanh activation function
 def profile3():
