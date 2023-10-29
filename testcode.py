@@ -4,10 +4,16 @@ import Particle
 import ParticleConversion
 import hyperparameter_profile as profile
 
+#Choose a profile for testing
+test_profile = profile.profile2()
+
+#Choose a particle-based profile for testing
+particle_profile = profile.profile2()
+
 #Testing data and forward propagation
 test_data = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
 
-neural_network = NN.NeuralNetwork(*profile.profile2())
+neural_network = NN.NeuralNetwork(*test_profile)
 
 output = neural_network.forward_propagation(test_data)
 print("output is:")
@@ -46,9 +52,24 @@ assert (neural_network_layer_sizes == [12,20,5]).all()
 #Create a 37-size particle - the same size as the Test Neural Network we created
 test_particle = Particle.Particle(37)
 
-#Check that its elements are correctly-arranged in the "get_rough_layers" method
-rough_layers = ParticleConversion.get_rough_layers(neural_network.layer_sizes,test_particle)
+#Check that its elements are correctly-arranged in the "get_layer_vectors" method
+rough_layers = ParticleConversion.get_layer_vectors(neural_network.layer_sizes,test_particle)
 
 assert len(rough_layers[0]) == 12
 assert len(rough_layers[1]) == 20
 assert len(rough_layers[2]) == 5
+
+#Create a Neural Network based on the layer vectors, and see if it works by checking lengths of weights and biases
+particle_neural_network = ParticleConversion.particle_to_neural_network(*particle_profile,test_particle)
+
+assert len(particle_neural_network.biases[0]) == 4 #Make sure 4 biases from Input to Hidden Layer 1 (H.L. 1)
+assert len(particle_neural_network.biases[1]) == 4 #Make sure 4 biases from Hidden Layer 1 to Hidden Layer 2 (H.L. 2)
+assert len(particle_neural_network.biases[2]) == 1 #Make sure 1 bias from Hidden Layer 2 to Output
+
+assert len(particle_neural_network.weights[0]) == 2 #Make sure first dimension of weight matrix 2 from Input to H.L. 1
+assert len(particle_neural_network.weights[1]) == 4 #Make sure first dimension of weight matrix 4 from H.L. 1 to H.L. 2
+assert len(particle_neural_network.weights[2]) == 4 #Make sure first dimension of weight matrix 4 from H.L. 2 to Output
+
+assert len(particle_neural_network.weights[0][0]) == 4 #Make sure second dimension of weight matrix 4 from Input to H.L. 1
+assert len(particle_neural_network.weights[1][0]) == 4 #Make sure second dimension of weight matrix 4 from H.L. 1 to H.L. 2
+assert len(particle_neural_network.weights[2][0]) == 1 #Make sure second dimension of weight matrix 1 from H.L. 2 to Output
