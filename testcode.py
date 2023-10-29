@@ -11,3 +11,12 @@ neural_network = NN.NeuralNetwork(2,1)
 output = neural_network.forward_propagation(test_data)
 print("output is:")
 print(output)
+
+#Make sure that, for each element of the test data, there is the corresponding output
+assert len(output) == len(test_data)
+
+#Testing particle vector and velocity size correctness
+test_particle = Particle.Particle(10)
+
+assert len(test_particle.vector) == 10
+assert len(test_particle.velocity) == 10
