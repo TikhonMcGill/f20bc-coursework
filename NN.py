@@ -11,13 +11,12 @@ class NeuralNetwork:
     def __init__(self, input_vector_size, output_vector_size):
         self.input_vector_size = input_vector_size
         self.hidden_layers, self.activation_functions = hp.profile2()
-        self.output_neurons = output_vector_size
-        
+        self.output_vector_size = output_vector_size
         
         # Initialize the weights and biases for the layers
 
         #1. Store the sizes of each layer in an array
-        self.layer_sizes = [self.input_vector_size] + self.hidden_layers + [self.output_neurons]
+        self.layer_sizes = [self.input_vector_size] + self.hidden_layers + [self.output_vector_size]
         #2. Initialize random weights for each layer
         self.weights = [np.random.rand(self.layer_sizes[i], self.layer_sizes[i+1]) for i in range(len(self.layer_sizes) - 1)]
         #3. Initialize an array of biases of 0 for each layer (except for the output layer)
