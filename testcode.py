@@ -1,4 +1,3 @@
-import pandas as pd
 import numpy as np
 import NN
 import Particle
@@ -11,6 +10,9 @@ neural_network = NN.NeuralNetwork(2,1)
 output = neural_network.forward_propagation(test_data)
 print("output is:")
 print(output)
+
+#Make sure that we have weights and biases for each layer
+assert len(neural_network.weights) == len(neural_network.biases)
 
 #Make sure that, for each element of the test data, there is the corresponding output
 assert len(output) == len(test_data)
