@@ -25,7 +25,7 @@ assert len(test_particle.vector) == 10
 assert len(test_particle.velocity) == 10
 
 #Testing Neural Network Particle size
-neural_network_size = ParticleConversion.neural_network_particle_vector_size(neural_network.layer_sizes)
+neural_network_size = ParticleConversion.get_particle_vector_size(neural_network.layer_sizes)
 
 #The Neural Network base class uses profile2, which is 2 hidden layers of size 4 each.
 #The input size is 2
@@ -41,3 +41,13 @@ assert neural_network_size == 37
 neural_network_layer_sizes = ParticleConversion.get_particle_layer_counts(neural_network.layer_sizes)
 
 assert (neural_network_layer_sizes == [12,20,5]).all()
+
+#Create a 37-size particle - the same size as the Test Neural Network we created
+test_particle = Particle.Particle(37)
+
+#Check that its elements are correctly-arranged in the "get_rough_layers" method
+rough_layers = ParticleConversion.get_rough_layers(neural_network.layer_sizes,test_particle)
+
+assert len(rough_layers[0]) == 12
+assert len(rough_layers[1]) == 20
+assert len(rough_layers[2]) == 5

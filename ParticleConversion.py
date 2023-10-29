@@ -27,5 +27,31 @@ def get_particle_layer_counts(layer_sizes) -> np.array:
 
 #Code for getting the size of a Particle's Vector if a Neural Network is converted into a Particle
 #This is for information reasons ()
-def neural_network_particle_vector_size(layer_sizes) -> int:
+def get_particle_vector_size(layer_sizes) -> int:
     return np.sum(get_particle_layer_counts(layer_sizes))
+
+#Code for converting a Particle's Vector, a long list of numbers, into a list of smaller lists of numbers,
+#each smaller list representing all the weights and biases for the resulting Neural Network from this particle
+def get_rough_layers(layer_sizes, particle : Particle):
+    #Get the number of elements in each layer
+    layer_counts = get_particle_layer_counts(layer_sizes)
+
+    resulting_layers = []
+
+    #Copy the particle's vector, so that we can pop elements from it easily
+    removable_array = particle.vector.copy()
+
+    #Go through every layer in the layer count, adding elements corresponding to its
+    #index to the resulting layers
+    for layer in range(len(layer_counts)):
+        new_rough_layer = []
+
+        for element in range(layer_counts[layer]):
+            #Add the first element of the removable array to this layer, then
+            #remove it  from the list
+            new_rough_layer.append(removable_array[0])
+            removable_array = removable_array[1:]
+        
+        resulting_layers.append(new_rough_layer)
+    
+    return resulting_layers
