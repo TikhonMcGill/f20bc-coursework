@@ -9,6 +9,6 @@ test_data = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
 
 neural_network = NN.NeuralNetwork(2,1)
 
-output = neural_network.forward_propagation2(test_data)
+output = neural_network.forward_propagation(test_data)
 print("output is:")
 print(output)
