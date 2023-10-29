@@ -6,7 +6,7 @@ from Particle import Particle
 #This is for information reasons ()
 def neural_network_particle_vector_size(layer_sizes) -> int:
     result = 0
-    for layer in range(layer_sizes):
+    for layer in range(len(layer_sizes)):
         #If layer is 0, it is the first layer, so ignore it
         if layer == 0:
             continue
