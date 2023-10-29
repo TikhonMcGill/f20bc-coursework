@@ -4,27 +4,27 @@ import activation_functions as actfunc
 # with their respective number of neurons and the activation function
 
 # Generic function for creating a profile
-def profile(_hidden_layers,_activation_function):
-    hidden_layers = _hidden_layers
-    activation_function = _activation_function
-    return hidden_layers, activation_function
+def profile(_layer_sizes,_activation_functions):
+    layer_sizes = _layer_sizes
+    activation_function = _activation_functions
+    return layer_sizes, activation_function
 
-#Create profile with 2 hidden layers of 4 neurons each, utilizing the ReLU activation function
+#Create profile with 2 input layers, 2 hidden layers of 4 neurons each, and 1 output layer, utilizing various activation functions
 def profile1():
-    return profile([4,4],[actfunc.activation_relu, actfunc.activation_elu, actfunc.activation_leaky_relu])
+    return profile([2,4,4,1],[actfunc.activation_relu, actfunc.activation_elu, actfunc.activation_leaky_relu])
 
-#Create profile with 2 hidden layers of 4 neurons each, utilizing the logistic activation function
+#Create profile with 2 input layers, 2 hidden layers of 4 neurons each, and 1 output layer, utilizing various activation functions
 def profile2():
-    return profile([4,4],[actfunc.activation_relu, actfunc.activation_relu, actfunc.activation_logistic])
+    return profile([2,4,4,1],[actfunc.activation_relu, actfunc.activation_relu, actfunc.activation_logistic])
 
-#Create profile with 2 hidden layers of 4 neurons each, utilizing the tanh activation function
+#Create profile with 2 input layers, 2 hidden layers of 4 neurons each, and 1 output layer, utilizing various activation functions
 def profile3():
-    return profile([4,4],[actfunc.activation_tanh, actfunc.activation_relu, actfunc.activation_elu])
+    return profile([2,4,4,1],[actfunc.activation_tanh, actfunc.activation_relu, actfunc.activation_elu])
 
-#Create profile with 2 hidden layers of 4 neurons each, utilizing the leaky ReLU activation function
+#Create profile with 2 input layers, 2 hidden layers of 4 neurons each, and 1 output layer, utilizing various activation functions
 def profile4():
-    return profile([4,4],[actfunc.activation_leaky_relu,actfunc.activation_logistic,actfunc.activation_tanh])
+    return profile([2,4,4,1],[actfunc.activation_leaky_relu,actfunc.activation_logistic,actfunc.activation_tanh])
 
-#Create profile with 2 hidden layers of 4 neurons each, utilizing the eLU activation function
+#Create profile with 2 input layers, 2 hidden layers of 4 neurons each, and 1 output layer, utilizing various activation functions
 def profile5():
-    return profile([4,4],[actfunc.activation_elu,actfunc.activation_leaky_relu,actfunc.activation_logistic])
+    return profile([2,4,4,1],[actfunc.activation_elu,actfunc.activation_leaky_relu,actfunc.activation_logistic])

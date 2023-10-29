@@ -5,21 +5,27 @@ import hyperparameter_profile as hp
 
 #Neural network class with adjustable number of hidden layers and number of neurons
 class NeuralNetwork:
-    #Only needed parameters to create the neural network are input size and number of neurons in the output layer
-    #both of which will be dependent on the dataset and will be fixed based on that
-    #The number of neurons in the hidden layers and the number of hidden layers as well as the activation function are all adjusted in the profile file
-    def __init__(self, input_vector_size, output_vector_size):
-        self.input_vector_size = input_vector_size
-        self.hidden_layers, self.activation_functions = hp.profile2()
-        self.output_vector_size = output_vector_size
+    #The only needed parameter is the layers, an array of numbers, the numbers representing
+    #the number of neurons in each layer. The first layer, conceptually, is the input layer, the
+    #final layer is the output layer.
+
+    #The other parameter is the activation function for each layer (one less than the number of layers)
+
+    def __init__(self, layer_sizes, activation_functions):
+        self.input_vector_size = layer_sizes[0]
+        self.output_vector_size = layer_sizes[-1]
         
+        if len(activation_functions) != (len(layer_sizes) - 1):
+            raise ValueError("The number of activation functions needs to be the number of layers -1!")
+
+        self.layer_sizes = layer_sizes
+        self.activation_functions = activation_functions
+
         # Initialize the weights and biases for the layers
 
-        #1. Store the sizes of each layer in an array
-        self.layer_sizes = [self.input_vector_size] + self.hidden_layers + [self.output_vector_size]
-        #2. Initialize random weights for each layer
+        #1. Initialize random weights for each layer
         self.weights = [np.random.rand(self.layer_sizes[i], self.layer_sizes[i+1]) for i in range(len(self.layer_sizes) - 1)]
-        #3. Initialize an array of biases of 0 for each layer (except for the output layer)
+        #2. Initialize an array of biases of 0 for each layer (except for the output layer)
         self.biases = [np.zeros((1, size)) for size in self.layer_sizes[1:]]
 
     #Forward Propagation Function
@@ -28,8 +34,12 @@ class NeuralNetwork:
         #because that is what is being passed into the first hidden layer
         prev_output = input
 
+        #Get the hidden layers by removing the first and last elements
+        hidden_layers = self.layer_sizes[1:]
+        hidden_layers = hidden_layers[-1:]
+
         #Do the matrix calculation over every hidden layer
-        for layer in range(len(self.hidden_layers)):
+        for layer in range(len(hidden_layers)):
             #Multiply the weights and inputs(also outputs from previous layers) together
             matrix_product = np.dot(prev_output,self.weights[layer])
             #Add the Biases

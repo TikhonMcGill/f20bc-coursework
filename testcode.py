@@ -2,11 +2,12 @@ import numpy as np
 import NN
 import Particle
 import ParticleConversion
+import hyperparameter_profile as profile
 
 #Testing data and forward propagation
 test_data = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
 
-neural_network = NN.NeuralNetwork(2,1)
+neural_network = NN.NeuralNetwork(*profile.profile2())
 
 output = neural_network.forward_propagation(test_data)
 print("output is:")
