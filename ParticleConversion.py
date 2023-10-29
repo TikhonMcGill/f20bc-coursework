@@ -2,10 +2,12 @@ import numpy as np
 from NN import NeuralNetwork
 from Particle import Particle
 
-#Code for getting the size of a Particle's Vector if a Neural Network is converted into a Particle
-#This is for information reasons ()
-def neural_network_particle_vector_size(layer_sizes) -> int:
-    result = 0
+#Code that returns a list of numbers. Each number in this list represents the sum of the number of weights and biases
+#for that layer in the Neural Network - this will be useful in converting Particles to Neural Networks
+def get_particle_layer_counts(layer_sizes) -> np.array:
+    #Initialize the empty array
+    result = []
+
     for layer in range(len(layer_sizes)):
         #If layer is 0, it is the first layer, so ignore it
         if layer == 0:
@@ -19,6 +21,11 @@ def neural_network_particle_vector_size(layer_sizes) -> int:
             bias_size = layer_sizes[layer]
 
             #Add the number of weights and biases to the total result
-            result += (weight_size + bias_size)
+            result.append(weight_size + bias_size)
     
-    return result
+    return np.array(result)
+
+#Code for getting the size of a Particle's Vector if a Neural Network is converted into a Particle
+#This is for information reasons ()
+def neural_network_particle_vector_size(layer_sizes) -> int:
+    return np.sum(get_particle_layer_counts(layer_sizes))

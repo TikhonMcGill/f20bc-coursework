@@ -35,3 +35,9 @@ neural_network_size = ParticleConversion.neural_network_particle_vector_size(neu
 #This gives 8 + 4 + 16 + 4 + 4 + 1 = 37
 #So, if this Test Neural Network is converted to a Particle, its vector size should be 37
 assert neural_network_size == 37
+
+#Furthermore, if this Test Neural Network is converted to a Particle, each layer would have the following sums of
+#weights and connections: [12,20,5]
+neural_network_layer_sizes = ParticleConversion.get_particle_layer_counts(neural_network.layer_sizes)
+
+assert (neural_network_layer_sizes == [12,20,5]).all()
