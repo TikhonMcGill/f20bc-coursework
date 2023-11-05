@@ -2,7 +2,11 @@ import numpy as np
 
 #Particle Class which holds a vector and a velocity
 class Particle:
-    #Create a new Particle with a vector of the vector size and a vector velocity of the vector size
-    def __init__(self,vector_size : int, velocity):
+    #Create a Particle with a vector of the vector size, and the velocity being initialized at 0
+    def __init__(self,vector_size : int):
         self.vector = np.zeros(vector_size)
-        self.velocity = velocity
+        self.velocity = np.zeros(vector_size)
+    
+    #Update the Particle's Vector based on its velocity
+    def update_vector(self):
+        self.vector = np.add(self.vector,self.velocity)

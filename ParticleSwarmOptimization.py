@@ -38,6 +38,3 @@ class ParticleSwarmOptimization:
 
     def update_velocity(self,particle):
         pass
-
-    def update_position(self,particle):
-        pass
