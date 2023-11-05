@@ -51,8 +51,8 @@ def get_layer_vectors(layer_sizes, particle : Particle):
 
     resulting_layers = []
 
-    #Copy the particle's vector, so that we can pop elements from it easily
-    removable_array = particle.vector.copy()
+    #Copy the particle's position, so that we can pop elements from it easily
+    removable_array = particle.position.copy()
 
     #Go through every layer in the layer count, adding elements corresponding to its
     #index to the resulting layers
