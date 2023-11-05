@@ -43,26 +43,35 @@ class ParticleSwarmOptimization:
         global_best = 0
         global_best_position = np.zeros(self.vector_size)
         
-        #For the number of iterations, go through each particle and:
-        #1. Update its position based on current velocity
-        #2. Evaluate the Fitness of its Position
-        #3. If the Fitness at this position Exceeds the Particle's Personal best, update Particle's 
-        #Personal Best to be this position
-        #4. If the Fitness at this position Exceeds the Best of ALL particles, update the global best and
-        #the global best position to be, respectively, this particle's fitness and this particle's position
-        #5. Update the velocity of the Particle, based on inertia, the cognitive factor (its personal best),
-        #and the social factor (pick N/10 informants, where N is no. particles, calculate average of their personal bests),
-        #and the global best position
-
         for iteration in range(iterations):
-            pass
+            for particle in particles:
+                #Update the Particle's position based on current velocity
+                particle.update_position()
+
+                #Evaluate the Fitness of the Particle's Position
+                fitness = self.access_fitness(particle)
+
+                #If Fitness at this position Exceeds Particle's Personal best, update Particle's Personal Best to be here
+                if fitness > particle.personal_best:
+                    particle.personal_best = fitness
+                    particle.personal_best_position = particle.position
+
+                #If Fitness at this position Exceeds the Best of ALL particles, update the global best and
+                #the global best position to be, respectively, this particle's fitness and this particle's position
+                if fitness > global_best:
+                    global_best = fitness
+                    global_best_position = particle.position
+                
+                #Update the velocity of the Particle, based on inertia, cognitive factor (its personal best),
+                #social factor (average of personal bests of randomly-chosen informants), and global best position
+                self.update_velocity(particle)
 
 
         #Return the Global Best
         return global_best
 
-    def access_fitness(self,particle):
+    def access_fitness(self,particle : Particle):
         pass
 
-    def update_velocity(self,particle):
+    def update_velocity(self,particle : Particle):
         pass
