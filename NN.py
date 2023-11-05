@@ -1,5 +1,4 @@
 import numpy as np
-import hyperparameter_profile as hp
 
 #Neural network class with adjustable number of hidden layers and number of neurons
 class NeuralNetwork:

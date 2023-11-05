@@ -2,18 +2,18 @@ import numpy as np
 import NN
 import Particle
 import ParticleConversion
-import hyperparameter_profile as profile
+import hyperparameter_profiles as profiles
 
 #Choose a profile for testing
-test_profile = profile.profile2()
+test_profile = profiles.profile2
 
 #Choose a particle-based profile for testing
-particle_profile = profile.profile2()
+particle_profile = profiles.profile2
 
 #Testing data and forward propagation
 test_data = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
 
-neural_network = NN.NeuralNetwork(*test_profile)
+neural_network = NN.NeuralNetwork(test_profile.layer_sizes,test_profile.activation_functions)
 
 output = neural_network.forward_propagation(test_data)
 print("output is:")
@@ -60,7 +60,7 @@ assert len(rough_layers[1]) == 20
 assert len(rough_layers[2]) == 5
 
 #Create a Neural Network based on the layer vectors, and see if it works by checking lengths of weights and biases
-particle_neural_network = ParticleConversion.particle_to_neural_network(*particle_profile,test_particle)
+particle_neural_network = ParticleConversion.particle_to_neural_network(particle_profile.layer_sizes,particle_profile.activation_functions,test_particle)
 
 assert len(particle_neural_network.biases[0]) == 4 #Make sure 4 biases from Input to Hidden Layer 1 (H.L. 1)
 assert len(particle_neural_network.biases[1]) == 4 #Make sure 4 biases from Hidden Layer 1 to Hidden Layer 2 (H.L. 2)

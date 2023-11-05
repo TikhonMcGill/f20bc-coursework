@@ -3,29 +3,34 @@ import numpy as np
 from Particle import Particle
 import ParticleConversion as pc
 
+from HyperparameterProfile import HyperparameterProfile
+
 from NN import NeuralNetwork
 
 class ParticleSwarmOptimization:
-    def pso(self,data,labels,iterations,nn_layer_sizes,nn_activation_functions,no_particles):
+    def pso(self,data,labels,profile : HyperparameterProfile):
         #Particle Swarm Optimization Hyperparameters
-        self.a = 0.7 #Inertial Factor
-        self.b = 1.2 #Cognitive Factor
-        self.g = 1.8 #Social Factor - based on best out of selected informants
-        self.gl = 1.9 #Global Factor - based on the best position out of ALL particles
+        self.a = profile.a#0.7 Inertial Factor
+        self.b = profile.b#1.2 Cognitive Factor
+        self.g = profile.g#1.8 Social Factor - based on best out of selected informants
+        self.gl = profile.gl#1.9 Global Factor - based on the best position out of ALL particles
         
+        no_particles = profile.no_particles
+
         t = 1
         #not sure if the jump size is actually necessary so left it for now as it does not really make sense to me
         #jump_size = ?
 
         #Initialize the particles
         self.particles = []
+
         for p in range(no_particles):
             #Fill the particles array with particles, with random velocities and positions
             #encoding the weights and biases of the neural network
             
             #Get the size of the Particle's Vector, based on the layer sizes of the Neural Network given.
             #Also, keep this vector size, since it'll be useful in future calculations (e.g. velocity etc.)
-            self.vector_size = pc.get_particle_layer_counts(nn_layer_sizes)
+            self.vector_size = pc.get_particle_layer_counts(profile.layer_sizes)
 
             #Create a new Particle with this vector size
             new_particle = Particle(self.vector_size)
@@ -45,7 +50,7 @@ class ParticleSwarmOptimization:
         self.global_best = 0
         self.global_best_position = np.zeros(self.vector_size)
         
-        for iteration in range(iterations):
+        for iteration in range(profile.iterations):
             for particle in self.particles:
                 #Update the Particle's position based on current velocity
                 particle.update_position()
