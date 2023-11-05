@@ -107,7 +107,7 @@ def particle_to_neural_network(layer_sizes, activation_functions, particle : Par
         del(layer_vectors[l][-bias_count:])
     
     #With the Biases extracted, we simply set the Neural Network's Biases to the ones we extracted
-    neural_network.biases = np.array(particle_biases, dtype=object)
+    neural_network.biases = particle_biases
 
     #We are now left with smaller layer vectors, and each layer vector now represents a flattened weight matrix
     #So, we go through them again, get the dimension of the matrix (which we can infer from size of this layer and previous layer),
@@ -124,7 +124,7 @@ def particle_to_neural_network(layer_sizes, activation_functions, particle : Par
         particle_weights.append(np.array(weight_matrix))
     
     #With the weights extracted, set the Neural Network's Weights to the ones we acquired
-    neural_network.weights = np.array(particle_weights, dtype=object)
+    neural_network.weights = particle_weights
 
     #Finally, return the Neural Network!
     return neural_network
