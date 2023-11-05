@@ -1,8 +1,12 @@
-import Particle as p
+import numpy as np
+
+from Particle import Particle
 import ParticleConversion as pc
 
+from NN import NeuralNetwork
+
 class ParticleSwarmOptimization:
-    def pso(self,data,labels,iterations,no_particles):
+    def pso(self,data,labels,iterations,nn_layer_sizes,nn_activation_functions,no_particles):
         #particle swarm optimization hyperparameters
         a = 0.7
         b = 1.2
@@ -11,11 +15,28 @@ class ParticleSwarmOptimization:
         #not sure if the jump size is actually necessary so left it for now as it does not really make sense to me
         #jump_size = ?
 
-        #initialize the particles
+        #Initialize the particles
         particles = []
-        for p in no_particles:
-            #fill the particles array with particles using random velovities and encoding the weights and biases of the neural network
-            break
+        for p in range(no_particles):
+            #Fill the particles array with particles, with random velocities and positions
+            #encoding the weights and biases of the neural network
+            
+            #Get the size of the Particle's Vector, based on the layer sizes of the Neural Network given
+            vector_size = pc.get_particle_layer_counts(nn_layer_sizes)
+
+            #Create a new Particle with this vector size
+            new_particle = Particle(vector_size)
+
+            #Initialize the Particle's Position, with each dimension's value being between -N and N, where N is the number
+            #of particles
+            new_particle.position = [np.random.rand(-no_particles,no_particles) for i in range(vector_size)]
+
+            #Initialize the Particle's Velocity, each dimension's value being between -N/2 and N/2, where N = no. particles
+            new_particle.velocity = [np.random.rand(-no_particles/2,no_particles/2) for i in range(vector_size)]
+
+            #Add the New Particle to the Particles Array
+            particles.append(new_particle)
+
 
         #initialize the global best
         best = 0
