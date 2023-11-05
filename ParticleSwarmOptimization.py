@@ -27,12 +27,12 @@ class ParticleSwarmOptimization:
             #Create a new Particle with this vector size
             new_particle = Particle(vector_size)
 
-            #Initialize the Particle's Position, with each dimension's value being between -N and N, where N is the number
+            #Initialize the Particle's Position, with each dimension's value being between 0 and N, where N is the number
             #of particles
-            new_particle.position = [np.random.rand(-no_particles,no_particles) for i in range(vector_size)]
+            new_particle.position = np.random.rand(vector_size) * no_particles
 
-            #Initialize the Particle's Velocity, each dimension's value being between -N/2 and N/2, where N = no. particles
-            new_particle.velocity = [np.random.rand(-no_particles/2,no_particles/2) for i in range(vector_size)]
+            #Initialize the Particle's Velocity, each dimension's value being between 0 and N/2, where N = no. particles
+            new_particle.velocity = np.random.rand(vector_size) * no_particles/2
 
             #Add the New Particle to the Particles Array
             particles.append(new_particle)
