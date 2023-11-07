@@ -8,7 +8,7 @@ from HyperparameterProfile import HyperparameterProfile
 from NN import NeuralNetwork
 
 class ParticleSwarmOptimization:
-    def pso(self,data,labels,profile : HyperparameterProfile):
+    def pso(self,profile : HyperparameterProfile):
         #Particle Swarm Optimization Hyperparameters
         self.a = profile.a#0.7 Inertial Factor
         self.b = profile.b#1.2 Cognitive Factor
@@ -76,8 +76,12 @@ class ParticleSwarmOptimization:
         #Return the Global Best
         return self.global_best
 
-    def access_fitness(self,particle : Particle) -> float:
-        pass
+    def access_fitness(self,data,labels,profile,particle : Particle) -> float:
+        fitness = 0
+        #Convert the Particle into a Neural Network
+        nn = pc.particle_to_neural_network(profile.layer_sizes,profile.activation_functions,particle)
+        out = nn.forward_propagation(data)
+        return fitness
     
     #Code to pick N/10 informants, where N is the number of particles
     def get_informants(self,particle : Particle):
