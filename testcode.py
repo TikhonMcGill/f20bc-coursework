@@ -1,14 +1,27 @@
 import numpy as np
+import pandas as pd
 import NN
 import Particle
 import ParticleConversion
 import hyperparameter_profiles as profiles
+import ParticleSwarmOptimization as pso
 
 #Choose a profile for testing
 test_profile = profiles.profile2
 
 #Testing data and forward propagation
 test_data = np.array([[0, 0, 1, 2], [0, 1, 1, 0], [1, 0, 5, 6], [1, 1, 3, 2]])
+#actual data
+dataset = pd.read_csv("data_banknote_authentication.txt") #Load the dataset
+test_size = 0.2 #20% of the dataset is used for testing
+test_samples = int(test_size * len(dataset)) #Number of samples used for testing
+train_data = dataset.iloc[test_samples:] #Training data
+test_d = dataset.iloc[:test_samples] #Testing data
+labels = test_d.iloc[:, -1] #store lables from testing data before removing them
+test_d.drop(test_d.iloc[:,-1]) #Remove labels from testing data
+#print("labels are:")
+#print(labels)
+#print(dataset.head())
 
 neural_network = NN.NeuralNetwork(test_profile.layer_sizes,test_profile.activation_functions)
 
@@ -51,6 +64,27 @@ test_particle = Particle.Particle(45)
 
 #Check that its elements are correctly-arranged in the "get_layer_vectors" method
 rough_layers = ParticleConversion.get_layer_vectors(neural_network.layer_sizes,test_particle)
+
+#let's check if the fitness function works
+s = ParticleConversion.get_particle_layer_counts(test_profile.layer_sizes)
+#print("s is:")
+#print(s)
+uh = ParticleConversion.get_layer_vectors(test_profile.layer_sizes,test_particle)
+print("uh is:")
+print(uh)
+#print("profilelayer sizes are:")
+#print(test_profile.layer_sizes)
+new_particle = Particle.Particle(s)
+new_particle.position = np.random.rand(1,len(s))
+print("new particle position is:")
+print(new_particle.position)
+#Initialize the Particle's Velocity, each dimension's value being between 0 and N/2, where N = no. particles
+new_particle.velocity = np.random.rand(1,len(s))
+print("new particle velocity is:")
+print(new_particle.velocity)
+fitness = pso.ParticleSwarmOptimization.access_fitness(test_d,labels,test_profile,new_particle)
+print("fitness is:")
+print(fitness)
 
 assert len(rough_layers[0]) == 20
 assert len(rough_layers[1]) == 20

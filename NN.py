@@ -53,3 +53,6 @@ class NeuralNetwork:
         #Apply the activation function and set the Output
         output = self.activation_functions[-1](matrix_output_total)
         return output
+    
+    def train(self):
+        pass

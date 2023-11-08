@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 
 from Particle import Particle
 import ParticleConversion as pc
@@ -76,11 +77,19 @@ class ParticleSwarmOptimization:
         #Return the Global Best
         return self.global_best
 
-    def access_fitness(self,data,labels,profile,particle : Particle) -> float:
+    def access_fitness(data,labels,profile,particle : Particle) -> float:
         fitness = 0
+        threshold = 0.5
         #Convert the Particle into a Neural Network
         nn = pc.particle_to_neural_network(profile.layer_sizes,profile.activation_functions,particle)
+        #run through the data and get the output
         out = nn.forward_propagation(data)
+        #turn the output into a dataframe and join the labels, for easier comparison
+        results = pd.DataFrame(np.around(out, decimals=3)).join(labels)
+        #replace the output with 1 if it is above the threshold, 0 otherwise
+        results["predicted"] = results[0].apply(lambda x: 1 if x > threshold else 0)
+        #compare the predicted output with the actual output and get the accuracy, which will be used as the fitness
+        fitness = results.loc[results['pred']==results['class']].shape[0] / results.shape[0] * 100
         return fitness
     
     #Code to pick N/10 informants, where N is the number of particles
