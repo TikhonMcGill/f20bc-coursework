@@ -86,9 +86,7 @@ class ParticleSwarmOptimization:
         nn = pc.particle_to_neural_network(profile.layer_sizes,profile.activation_functions,particle)
         #run through the data and get the output
 
-        print(data)
-
-        out = nn.forward_propagation(data[0])
+        out = nn.forward_propagation(data)
         #turn the output into a dataframe and join the labels, for easier comparison
         results = pd.DataFrame(np.around(out, decimals=3)).join(labels)
         #replace the output with 1 if it is above the threshold, 0 otherwise
