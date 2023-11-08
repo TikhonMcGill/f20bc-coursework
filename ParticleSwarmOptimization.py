@@ -9,18 +9,21 @@ from HyperparameterProfile import HyperparameterProfile
 from NN import NeuralNetwork
 
 class ParticleSwarmOptimization:
-    def pso(self,profile : HyperparameterProfile):
+    
+    def __init__(self,profile : HyperparameterProfile):
         #Particle Swarm Optimization Hyperparameters
-        self.a = profile.a#0.7 Inertial Factor
-        self.b = profile.b#1.2 Cognitive Factor
-        self.g = profile.g#1.8 Social Factor - based on best out of selected informants
-        self.gl = profile.gl#1.9 Global Factor - based on the best position out of ALL particles
+        self.a = profile.a#Inertial Factor
+        self.b = profile.b#Cognitive Factor
+        self.g = profile.g#Social Factor - based on best out of selected informants
+        self.gl = profile.gl#Global Factor - based on the best position out of ALL particles
         
+        self.iterations = profile.iterations
+
         no_particles = profile.no_particles
 
-        t = 1
-        #not sure if the jump size is actually necessary so left it for now as it does not really make sense to me
-        #jump_size = ?
+        #Get the size of each Particle's Vector, based on the layer sizes of the Neural Network given.
+        #Also, keep this vector size, since it'll be useful in future calculations (e.g. velocity etc.)
+        self.vector_size = pc.get_particle_vector_size(profile.layer_sizes)
 
         #Initialize the particles
         self.particles = []
@@ -28,16 +31,13 @@ class ParticleSwarmOptimization:
         for p in range(no_particles):
             #Fill the particles array with particles, with random velocities and positions
             #encoding the weights and biases of the neural network
-            
-            #Get the size of the Particle's Vector, based on the layer sizes of the Neural Network given.
-            #Also, keep this vector size, since it'll be useful in future calculations (e.g. velocity etc.)
-            self.vector_size = pc.get_particle_layer_counts(profile.layer_sizes)
 
             #Create a new Particle with this vector size
             new_particle = Particle(self.vector_size)
 
             #Initialize the Particle's Position, with each dimension's value being between 0 and N, where N is the number
             #of particles
+
             new_particle.position = np.random.rand(self.vector_size) * no_particles
 
             #Initialize the Particle's Velocity, each dimension's value being between 0 and N/2, where N = no. particles
@@ -50,8 +50,9 @@ class ParticleSwarmOptimization:
         #Initialize the value of the global best, and its position
         self.global_best = 0
         self.global_best_position = np.zeros(self.vector_size)
-        
-        for iteration in range(profile.iterations):
+
+    def pso(self):
+        for iteration in range(self.iterations):
             for particle in self.particles:
                 #Update the Particle's position based on current velocity
                 particle.update_position()
@@ -77,13 +78,17 @@ class ParticleSwarmOptimization:
         #Return the Global Best
         return self.global_best
 
-    def access_fitness(data,labels,profile,particle : Particle) -> float:
+    def access_fitness(self,data,labels,profile,particle : Particle) -> float:
         fitness = 0
         threshold = 0.5
+
         #Convert the Particle into a Neural Network
         nn = pc.particle_to_neural_network(profile.layer_sizes,profile.activation_functions,particle)
         #run through the data and get the output
-        out = nn.forward_propagation(data)
+
+        print(data)
+
+        out = nn.forward_propagation(data[0])
         #turn the output into a dataframe and join the labels, for easier comparison
         results = pd.DataFrame(np.around(out, decimals=3)).join(labels)
         #replace the output with 1 if it is above the threshold, 0 otherwise

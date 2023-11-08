@@ -4,7 +4,7 @@ import NN
 import Particle
 import ParticleConversion
 import hyperparameter_profiles as profiles
-import ParticleSwarmOptimization as pso
+from ParticleSwarmOptimization import ParticleSwarmOptimization
 
 #Choose a profile for testing
 test_profile = profiles.profile2
@@ -17,6 +17,7 @@ test_size = 0.2 #20% of the dataset is used for testing
 test_samples = int(test_size * len(dataset)) #Number of samples used for testing
 train_data = dataset.iloc[test_samples:] #Training data
 test_d = dataset.iloc[:test_samples] #Testing data
+
 labels = test_d.iloc[:, -1] #store lables from testing data before removing them
 test_d.drop(test_d.iloc[:,-1]) #Remove labels from testing data
 #print("labels are:")
@@ -66,7 +67,7 @@ test_particle = Particle.Particle(45)
 rough_layers = ParticleConversion.get_layer_vectors(neural_network.layer_sizes,test_particle)
 
 #let's check if the fitness function works
-s = ParticleConversion.get_particle_layer_counts(test_profile.layer_sizes)
+s = ParticleConversion.get_particle_vector_size(test_profile.layer_sizes)
 #print("s is:")
 #print(s)
 uh = ParticleConversion.get_layer_vectors(test_profile.layer_sizes,test_particle)
@@ -75,14 +76,24 @@ print(uh)
 #print("profilelayer sizes are:")
 #print(test_profile.layer_sizes)
 new_particle = Particle.Particle(s)
-new_particle.position = np.random.rand(1,len(s))
+new_particle.position = np.random.rand(s)
 print("new particle position is:")
 print(new_particle.position)
 #Initialize the Particle's Velocity, each dimension's value being between 0 and N/2, where N = no. particles
-new_particle.velocity = np.random.rand(1,len(s))
+new_particle.velocity = np.random.rand(s)
 print("new particle velocity is:")
 print(new_particle.velocity)
-fitness = pso.ParticleSwarmOptimization.access_fitness(test_d,labels,test_profile,new_particle)
+
+#Update the particle's movement
+new_particle.update_position()
+print("New Particle position after update:")
+print(new_particle.position)
+
+#Create a test ParticleSwarmOptimization class
+test_pso = ParticleSwarmOptimization(test_profile)
+
+fitness = test_pso.access_fitness(test_d,labels,test_profile,new_particle)
+
 print("fitness is:")
 print(fitness)
 

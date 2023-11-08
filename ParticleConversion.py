@@ -127,4 +127,8 @@ def particle_to_neural_network(layer_sizes, activation_functions, particle : Par
     neural_network.weights = particle_weights
 
     #Finally, return the Neural Network!
+
+    print(neural_network.weights)
+    print(neural_network.biases)
+
     return neural_network
