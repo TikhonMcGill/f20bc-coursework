@@ -85,14 +85,31 @@ class ParticleSwarmOptimization:
         #Convert the Particle into a Neural Network
         nn = pc.particle_to_neural_network(profile.layer_sizes,profile.activation_functions,particle)
         #run through the data and get the output
-
-        out = nn.forward_propagation(data)
+        #print("data is:")
+        #print(data.head())
+        data = np.array(data)
+        #print("data is:")
+        #print(data)
+        out = []
+        for point in data:
+            #print("point is:")
+            #print(point)
+            out.append(nn.forward_propagation(point))
+            #print("out is:")
+            #print(out)
+        print("out is:")
+        print(out)
         #turn the output into a dataframe and join the labels, for easier comparison
         results = pd.DataFrame(np.around(out, decimals=3)).join(labels)
+        #rename all collums for easier debugging/calculation later
+        results.rename(columns={results.columns[1]: "labels"}, inplace=True)
+        #print("results are:")
+        #print(results)
         #replace the output with 1 if it is above the threshold, 0 otherwise
         results["predicted"] = results[0].apply(lambda x: 1 if x > threshold else 0)
+        #print(results)
         #compare the predicted output with the actual output and get the accuracy, which will be used as the fitness
-        fitness = results.loc[results['pred']==results['class']].shape[0] / results.shape[0] * 100
+        fitness = results.loc[results['predicted']==results['labels']].shape[0] / results.shape[0] * 100
         return fitness
     
     #Code to pick N/10 informants, where N is the number of particles

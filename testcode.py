@@ -11,18 +11,21 @@ test_profile = profiles.profile2
 
 #Testing data and forward propagation
 test_data = np.array([[0, 0, 1, 2], [0, 1, 1, 0], [1, 0, 5, 6], [1, 1, 3, 2]])
+test_labels = [[0], [1], [1], [0]]
+test_labels = pd.DataFrame(test_labels)
+test_labels.rename(columns={test_labels.columns[0]: "labels"}, inplace=True)
 #actual data
 dataset = pd.read_csv("data_banknote_authentication.txt") #Load the dataset
-test_size = 0.2 #20% of the dataset is used for testing
+test_size = 0.3 #30% of the dataset is used for testing
 test_samples = int(test_size * len(dataset)) #Number of samples used for testing
 train_data = dataset.iloc[test_samples:] #Training data
 test_d = dataset.iloc[:test_samples] #Testing data
 
 labels = test_d.iloc[:, -1] #store lables from testing data before removing them
-test_d.drop(test_d.iloc[:,-1]) #Remove labels from testing data
-#print("labels are:")
-#print(labels)
-#print(dataset.head())
+test_d.drop(columns=test_d.columns[len(test_d.columns)-1], inplace=True) #Remove labels from testing data
+print("labels are:")
+print(test_labels)
+#print(test_d.head())
 
 neural_network = NN.NeuralNetwork(test_profile.layer_sizes,test_profile.activation_functions)
 
@@ -70,9 +73,6 @@ rough_layers = ParticleConversion.get_layer_vectors(neural_network.layer_sizes,t
 s = ParticleConversion.get_particle_vector_size(test_profile.layer_sizes)
 #print("s is:")
 #print(s)
-uh = ParticleConversion.get_layer_vectors(test_profile.layer_sizes,test_particle)
-print("uh is:")
-print(uh)
 #print("profilelayer sizes are:")
 #print(test_profile.layer_sizes)
 new_particle = Particle.Particle(s)
@@ -92,7 +92,8 @@ print(new_particle.position)
 #Create a test ParticleSwarmOptimization class
 test_pso = ParticleSwarmOptimization(test_profile)
 
-fitness = test_pso.access_fitness(test_d,labels,test_profile,new_particle)
+#fitness = test_pso.access_fitness(test_d,labels,test_profile,new_particle)
+fitness = test_pso.access_fitness(test_data,test_labels,test_profile,new_particle)
 
 print("fitness is:")
 print(fitness)
