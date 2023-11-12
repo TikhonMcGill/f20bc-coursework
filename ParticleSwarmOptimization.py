@@ -24,6 +24,9 @@ class ParticleSwarmOptimization:
 
         no_particles = profile.no_particles
 
+        self.layer_sizes = profile.layer_sizes #Configuration of layers of Neural Network
+        self.activation_functions = profile.activation_functions #Activation functions of layers of NN
+
         #Get the size of each Particle's Vector, based on the layer sizes of the Neural Network given.
         #Also, keep this vector size, since it'll be useful in future calculations (e.g. velocity etc.)
         self.vector_size = pc.get_particle_vector_size(profile.layer_sizes)
@@ -61,7 +64,7 @@ class ParticleSwarmOptimization:
                 particle.update_position()
 
                 #Evaluate the Fitness of the Particle's Position
-                fitness = self.access_fitness()
+                fitness = self.access_fitness(particle)
 
                 #If Fitness at this position Exceeds Particle's Personal best, update Particle's Personal Best to be here
                 if fitness > particle.personal_best:
@@ -81,12 +84,12 @@ class ParticleSwarmOptimization:
         #Return the Global Best
         return self.global_best
 
-    def access_fitness(self,profile,particle : Particle) -> float:
+    def access_fitness(self,particle : Particle) -> float:
         fitness = 0
         threshold = 0.5
 
         #Convert the Particle into a Neural Network
-        nn = pc.particle_to_neural_network(profile.layer_sizes,profile.activation_functions,particle)
+        nn = pc.particle_to_neural_network(self.layer_sizes,self.activation_functions,particle)
         #run through the data and get the output
         #print("data is:")
         #print(data.head())
@@ -100,8 +103,8 @@ class ParticleSwarmOptimization:
             out.append(nn.forward_propagation(point))
             #print("out is:")
             #print(out)
-        print("out is:")
-        print(out)
+        #print("out is:")
+        #print(out)
         #turn the output into a dataframe and join the labels, for easier comparison
         results = pd.DataFrame(np.around(out, decimals=3)).join(self.labels)
         #rename all collums for easier debugging/calculation later
@@ -118,7 +121,7 @@ class ParticleSwarmOptimization:
     #Code to pick N/10 informants, where N is the number of particles
     def get_informants(self,particle : Particle):
 
-        no_informants = max(1,len(self.particles)/10)
+        no_informants = int(max(1,len(self.particles)/10))
 
         #Make sure this particle cannot be picked as an informant
         possible_choices = self.particles.copy()

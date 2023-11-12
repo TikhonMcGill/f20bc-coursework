@@ -93,7 +93,7 @@ print(new_particle.position)
 test_pso = ParticleSwarmOptimization(test_profile,test_data,test_labels)
 
 #fitness = test_pso.access_fitness(test_d,labels,test_profile,new_particle)
-fitness = test_pso.access_fitness(test_profile,new_particle)
+fitness = test_pso.access_fitness(new_particle)
 
 print("fitness is:")
 print(fitness)
@@ -121,3 +121,4 @@ assert len(particle_neural_network.weights[2][0]) == 1 #Make sure second dimensi
 test_pso.pso()
 
 print("PSO Global Best: " + str(test_pso.global_best))
+print("Personal best of first PSO Particle:" + str(test_pso.particles[0].personal_best))
