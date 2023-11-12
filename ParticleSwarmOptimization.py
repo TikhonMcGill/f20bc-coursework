@@ -10,13 +10,16 @@ from NN import NeuralNetwork
 
 class ParticleSwarmOptimization:
     
-    def __init__(self,profile : HyperparameterProfile):
+    def __init__(self,profile : HyperparameterProfile,data,labels):
         #Particle Swarm Optimization Hyperparameters
         self.a = profile.a#Inertial Factor
         self.b = profile.b#Cognitive Factor
         self.g = profile.g#Social Factor - based on best out of selected informants
         self.gl = profile.gl#Global Factor - based on the best position out of ALL particles
         
+        self.data = data #The data used for PSO
+        self.labels = labels #The labels attached to the Data, so that the PSO knows what to optimize
+
         self.iterations = profile.iterations
 
         no_particles = profile.no_particles
@@ -58,7 +61,7 @@ class ParticleSwarmOptimization:
                 particle.update_position()
 
                 #Evaluate the Fitness of the Particle's Position
-                fitness = self.access_fitness(particle)
+                fitness = self.access_fitness()
 
                 #If Fitness at this position Exceeds Particle's Personal best, update Particle's Personal Best to be here
                 if fitness > particle.personal_best:
@@ -78,7 +81,7 @@ class ParticleSwarmOptimization:
         #Return the Global Best
         return self.global_best
 
-    def access_fitness(self,data,labels,profile,particle : Particle) -> float:
+    def access_fitness(self,profile,particle : Particle) -> float:
         fitness = 0
         threshold = 0.5
 
@@ -87,7 +90,7 @@ class ParticleSwarmOptimization:
         #run through the data and get the output
         #print("data is:")
         #print(data.head())
-        data = np.array(data)
+        data = np.array(self.data)
         #print("data is:")
         #print(data)
         out = []
@@ -100,7 +103,7 @@ class ParticleSwarmOptimization:
         print("out is:")
         print(out)
         #turn the output into a dataframe and join the labels, for easier comparison
-        results = pd.DataFrame(np.around(out, decimals=3)).join(labels)
+        results = pd.DataFrame(np.around(out, decimals=3)).join(self.labels)
         #rename all collums for easier debugging/calculation later
         results.rename(columns={results.columns[1]: "labels"}, inplace=True)
         #print("results are:")

@@ -90,10 +90,10 @@ print("New Particle position after update:")
 print(new_particle.position)
 
 #Create a test ParticleSwarmOptimization class
-test_pso = ParticleSwarmOptimization(test_profile)
+test_pso = ParticleSwarmOptimization(test_profile,test_data,test_labels)
 
 #fitness = test_pso.access_fitness(test_d,labels,test_profile,new_particle)
-fitness = test_pso.access_fitness(test_data,test_labels,test_profile,new_particle)
+fitness = test_pso.access_fitness(test_profile,new_particle)
 
 print("fitness is:")
 print(fitness)
@@ -116,3 +116,8 @@ assert len(particle_neural_network.weights[2]) == 4 #Make sure first dimension o
 assert len(particle_neural_network.weights[0][0]) == 4 #Make sure second dimension of weight matrix 4 from Input to H.L. 1
 assert len(particle_neural_network.weights[1][0]) == 4 #Make sure second dimension of weight matrix 4 from H.L. 1 to H.L. 2
 assert len(particle_neural_network.weights[2][0]) == 1 #Make sure second dimension of weight matrix 1 from H.L. 2 to Output
+
+#Run a Test PSO
+test_pso.pso()
+
+print("PSO Global Best: " + str(test_pso.global_best))
