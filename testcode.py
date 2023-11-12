@@ -122,3 +122,4 @@ test_pso.pso()
 
 print("PSO Global Best: " + str(test_pso.global_best))
 print("Personal best of first PSO Particle:" + str(test_pso.particles[0].personal_best))
+print("Position of First Particle: " + str(test_pso.particles[0].personal_best_position))

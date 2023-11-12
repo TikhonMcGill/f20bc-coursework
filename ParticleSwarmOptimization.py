@@ -59,6 +59,15 @@ class ParticleSwarmOptimization:
 
     def pso(self):
         for iteration in range(self.iterations):
+            #At every 10th iteration, print the global best
+            if iteration % 10 == 0:
+                print("At iteration %d, Global best is %.2f" % (iteration,self.global_best))
+                
+                random_particle = np.random.choice(self.particles,1)[0]
+                
+                print("Random Particle's Personal Best: %.2f" % (random_particle.personal_best))
+                print("Random Particle's Personal Best Position:" + str(random_particle.personal_best_position))
+
             for particle in self.particles:
                 #Update the Particle's position based on current velocity
                 particle.update_position()
