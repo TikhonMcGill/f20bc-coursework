@@ -14,4 +14,4 @@ def prepare_data(test_size):
     train_data.drop(columns=train_data.columns[len(train_data.columns)-1], inplace=True) #Drop the labels for the training data
     test_data.drop(columns=test_data.columns[len(test_data.columns)-1], inplace=True) #Drop the labels for the test data
 
-    return test_data.to_numpy(), train_data.to_numpy(), train_labels.to_numpy(), test_labels.to_numpy()
+    return test_data, train_data, train_labels, test_labels

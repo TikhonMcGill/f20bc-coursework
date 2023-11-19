@@ -41,13 +41,12 @@ class ParticleSwarmOptimization:
             #Create a new Particle with this vector size
             new_particle = Particle(self.vector_size)
 
-            #Initialize the Particle's Position, with each dimension's value being between 0 and N, where N is the number
-            #of particles
+            #Initialize the Particle's Position, with each dimension's value being between 0 and 1
 
-            new_particle.position = np.random.rand(self.vector_size) * no_particles
+            new_particle.position = np.random.rand(self.vector_size)
 
-            #Initialize the Particle's Velocity, each dimension's value being between 0 and N/2, where N = no. particles
-            new_particle.velocity = np.random.rand(self.vector_size) * no_particles/2
+            #Initialize the Particle's Velocity, each dimension's value being between 0 and 1, where N = no. particles
+            new_particle.velocity = np.random.rand(self.vector_size)
 
             #Add the New Particle to the Particles Array
             self.particles.append(new_particle)
@@ -109,7 +108,9 @@ class ParticleSwarmOptimization:
         for point in data:
             #print("point is:")
             #print(point)
-            out.append(nn.forward_propagation(point))
+            output = nn.forward_propagation(point)[0]
+            #print("Output: "+str(output))
+            out.append(output)
             #print("out is:")
             #print(out)
         #print("out is:")
@@ -126,6 +127,8 @@ class ParticleSwarmOptimization:
         #compare the predicted output with the actual output and get the accuracy, which will be used as the fitness
         fitness = results.loc[results['predicted']==results['labels']].shape[0] / results.shape[0] * 100
         return fitness
+
+
     
     #Code to pick N/10 informants, where N is the number of particles
     def get_informants(self,particle : Particle):
@@ -146,11 +149,11 @@ class ParticleSwarmOptimization:
 
         #First, update the velocity based on the inertial weight - this is non-random and applies to all dimensions,
         #so is a matter of just adding a multiplied vector to the velocity vector
-        particle.velocity = np.add(particle.velocity,particle.velocity * inertial_weight)
+        particle.velocity = particle.velocity * inertial_weight
 
         #Get the informants of this particle, and the best position among them
         informants = self.get_informants(particle)
-        informant_best = 0
+        informant_best = -np.Infinity
         informant_best_position = np.zeros(self.vector_size)
 
         for i in informants:
@@ -162,15 +165,15 @@ class ParticleSwarmOptimization:
         for dimension in range(len(particle.velocity)):
             #Get the cognitive part - difference between current position and personal best, multiplied by random
             #value between 0 and cognitive weight
-            cognitive_part = cognitive_weight * np.random.rand() * (particle.position[dimension] - particle.personal_best_position[dimension])
+            cognitive_part = cognitive_weight * np.random.rand() * (particle.personal_best_position[dimension] - particle.position[dimension])
 
             #Get the social part - difference between current position and best of the informants, multiplied by random value
             #between 0 and social weight
-            social_part = social_weight * np.random.rand() * (particle.position[dimension] - informant_best_position[dimension])
+            social_part = social_weight * np.random.rand() * (informant_best_position[dimension] - particle.position[dimension])
 
             #Get the global part - difference between current position and global best position, multipled by random value between
             #0 and global weight
-            global_part = global_weight * np.random.rand() * (particle.position[dimension] - self.global_best_position[dimension])
+            global_part = global_weight * np.random.rand() * (self.global_best_position[dimension] - particle.position[dimension])
 
             #Finally, add the three parts together, and add them to this dimension of the velocity
             total_change = cognitive_part + social_part + global_part

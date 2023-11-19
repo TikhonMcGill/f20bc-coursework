@@ -42,7 +42,7 @@ class NeuralNetwork:
             #Add the Biases
             matrix_total = np.add(matrix_product,self.biases[layer])
             #Apply the Activation Function and set the Output of this hidden layer to replace the previous Output
-            prev_output = self.activation_functions[layer](matrix_total)   
+            prev_output = self.activation_functions[layer](matrix_total)
         
         #Now let's deal with the Final Output Layer
         #Same as before, except we use the [-1] notation to get the final weights listed in self.weights
@@ -52,7 +52,5 @@ class NeuralNetwork:
         matrix_output_total = np.add(matrix_output_product, self.biases[-1])
         #Apply the activation function and set the Output
         output = self.activation_functions[-1](matrix_output_total)
+
         return output
-    
-    def train(self):
-        pass
