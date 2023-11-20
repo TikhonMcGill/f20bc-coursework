@@ -14,7 +14,16 @@ class Particle:
         #best performance
         self.personal_best_position = np.zeros(vector_size)
         self.personal_best = 0
+
+        #Set the boundaries for the weights
+
     
     #Update the Particle's Position based on its Velocity
     def update_position(self):
         self.position = np.add(self.position,self.velocity)
+
+        invalid_values = (self.position < -13) | (self.position > 18)
+
+        # Reposition particles that are not between 0 and 1
+        if np.any(invalid_values):
+            self.position[invalid_values] = np.random.rand(np.sum(invalid_values))
