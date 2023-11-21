@@ -59,7 +59,7 @@ class ParticleSwarmOptimization:
     def pso(self):
         for iteration in range(self.iterations):
             #At every 10th iteration, print the global best
-            '''
+            
             if iteration % 10 == 0:
                 print("At iteration %d, Global best is %.2f" % (iteration,self.global_best))
                 
@@ -67,7 +67,7 @@ class ParticleSwarmOptimization:
                 
                 print("Random Particle's Personal Best: %.2f" % (random_particle.personal_best))
                 print("Random Particle's Personal Best Position:" + str(random_particle.personal_best_position))
-            '''
+            
             for particle in self.particles:
                 #Update the Particle's position based on current velocity
                 particle.update_position()
@@ -99,24 +99,15 @@ class ParticleSwarmOptimization:
 
         #Convert the Particle into a Neural Network
         nn = pc.particle_to_neural_network(self.layer_sizes,self.activation_functions,particle)
-        #run through the data and get the output
-        #print("data is:")
-        #print(data.head())
+        #Conver data into a numpy array
         data = np.array(self.data)
-        #print("data is:")
-        #print(data)
         out = []
+        #go through every line in the data and get the predition
         for point in data:
             #print("point is:")
             #print(point)
             output = nn.forward_propagation(point)[0]
-            #print("output is:")
-            #print(output)
             out.append(output)
-            #print("out is:")
-            #print(out)
-        #print("out is:")
-        #print(out)
         #turn the output into a dataframe and join the labels, for easier comparison
         results = pd.DataFrame(np.around(out, decimals=3)).join(self.labels)
         #print("Results:")
@@ -129,9 +120,6 @@ class ParticleSwarmOptimization:
         #replace the output with 1 if it is above the threshold, 0 otherwise
         results["predicted"] = results[0].apply(lambda x: 1 if x > threshold else 0)
         
-        #print(results.head())
-        
-        #print(results)
         #compare the predicted output with the actual output and get the accuracy, which will be used as the fitness
         fitness = results.loc[results['predicted']==results['labels']].shape[0] / results.shape[0] * 100
         #print("The particle is:")

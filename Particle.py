@@ -24,6 +24,6 @@ class Particle:
 
         invalid_values = (self.position < -13) | (self.position > 18)
 
-        # Reposition particles that are not between 0 and 1
+        # Randomly Reposition particles that are not between -13 and 18
         if np.any(invalid_values):
             self.position[invalid_values] = np.random.rand(np.sum(invalid_values))
