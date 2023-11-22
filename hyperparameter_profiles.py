@@ -9,7 +9,7 @@ profile1 = HyperparameterProfile([4,4,4,1],[actfunc.activation_relu, actfunc.act
                                  0.5,1.2,1.8,1.9,100,10)
 
 #Profile with 4 input layers, 2 hidden layers of 4 neurons each, and 1 output layer, utilizing various activation functions
-profile2 = HyperparameterProfile([4,4,4,1],[actfunc.activation_relu, actfunc.activation_relu, actfunc.activation_leaky_relu],
+profile2 = HyperparameterProfile([4,4,4,1],[actfunc.activation_logistic, actfunc.activation_logistic, actfunc.activation_logistic],
                                  0.5,1.2,1.8,1.9,200,20)
 
 #Profile with 4 input layers, 2 hidden layers of 4 neurons each, and 1 output layer, utilizing various activation functions
@@ -27,3 +27,5 @@ profile5 = HyperparameterProfile([4,4,4,1],[actfunc.activation_elu,actfunc.activ
 #Profile with 4 input layers, 2 hidden layers of 4 neurons each, and 1 output layer, using logistic activation function
 profile6 = HyperparameterProfile([4,4,4,1],[actfunc.activation_logistic,actfunc.activation_logistic,actfunc.activation_logistic],
                                  0.7,1.2,1.8,1.9,100,10)
+
+profileArchitecture1 = HyperparameterProfile([4,3,1],[actfunc.activation_relu,actfunc.activation_logistic],0.7,1.3,1.2,0.8,300,20)
