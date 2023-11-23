@@ -24,6 +24,9 @@ class ParticleSwarmOptimization:
 
         no_particles = profile.no_particles
 
+        if no_particles < 2:
+            raise ValueError("Need at least 2 particles for PSO - otherwise there are no informants")
+
         self.layer_sizes = profile.layer_sizes #Configuration of layers of Neural Network
         self.activation_functions = profile.activation_functions #Activation functions of layers of NN
 
