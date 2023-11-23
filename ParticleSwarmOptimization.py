@@ -24,6 +24,8 @@ class ParticleSwarmOptimization:
 
         no_particles = profile.no_particles
 
+        self.no_informants = profile.no_informants
+
         if no_particles < 2:
             raise ValueError("Need at least 2 particles for PSO - otherwise there are no informants")
 
@@ -130,18 +132,14 @@ class ParticleSwarmOptimization:
         #print("fitness of particle is: %.2f" % (fitness))
         return fitness
 
-
-    
-    #Code to pick N/10 informants, where N is the number of particles
+    #Code to pick N informants, where N is the number of informants specified as a hyperparameter
     def get_informants(self,particle : Particle):
-
-        no_informants = int(max(1,len(self.particles)/10))
-
         #Make sure this particle cannot be picked as an informant
         possible_choices = self.particles.copy()
         possible_choices.remove(particle) 
 
-        return np.random.choice(possible_choices,no_informants,replace=False)
+        #Pick a random sample, without replacement, of the informants
+        return np.random.choice(possible_choices,self.no_informants,replace=False)
 
     def update_velocity(self,particle : Particle):
         inertial_weight = self.a

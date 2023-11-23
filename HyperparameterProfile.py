@@ -1,7 +1,7 @@
 class HyperparameterProfile:
     def __init__(self,network_layer_sizes,network_layer_activations,
                  pso_inertial_weight,pso_cognitive_weight,pso_social_weight,pso_global_weight,
-                 pso_iterations,pso_no_particles):
+                 pso_iterations,pso_no_particles,pso_no_informants):
         
         #Initialize hyperparameters of the Neural Network
         self.layer_sizes = network_layer_sizes
@@ -16,4 +16,9 @@ class HyperparameterProfile:
         #Initialize other hyperparameters of PSO
         self.iterations = pso_iterations
         self.no_particles = pso_no_particles
+
+        if pso_no_informants < 1:
+            raise ValueError("Need at least 1 informant for PSO.")
+
+        self.no_informants = pso_no_informants
     
