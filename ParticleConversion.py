@@ -7,7 +7,7 @@ from Particle import Particle
 #2. Get the weight matrix from the previous layer to this layer
 #3. Flatten the weight matrix into a vector
 #4. Concatenate the flattened weight vector with the biases for this layer
-#5. All of the vectors for each layer concatenated together represent a particle
+#5. All of the vectors for each layer concatenated together represent a particle's position
 
 #There is no reason to write code to convert a Neural Network into a Particle, since the Neural Networks themselves
 #Will only be evaluated and will do feeds forward - they will not be altered in any way, which means converting them
