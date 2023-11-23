@@ -45,12 +45,13 @@ class NeuralNetwork:
             prev_output = self.activation_functions[layer](matrix_total)
         
         #Now let's deal with the Final Output Layer
-        #Same as before, except we use the [-1] notation to get the final weights listed in self.weights
+        #Same as before, except we use layer+1 (next layer after last hidden layer) 
+        # notation to get the final weights listed in self.weights
         #(which will belong to the Output Layer)
-        matrix_output_product = np.dot(prev_output, self.weights[-1])
+        matrix_output_product = np.dot(prev_output, self.weights[layer+1])
         #Add the Biases again using the last indexed biases
-        matrix_output_total = np.add(matrix_output_product, self.biases[-1])
+        matrix_output_total = np.add(matrix_output_product, self.biases[layer+1])
         #Apply the activation function and set the Output
-        output = self.activation_functions[-1](matrix_output_total)
+        output = self.activation_functions[layer+1](matrix_output_total)
 
         return output
