@@ -61,6 +61,7 @@ for i in increments:
 #Carry out experiments with Social Weight - keep cognitive & global weights at default value, 1.25
 #f.write("Experimenting with Social Weights:\n")
 social_profile = create_default_profile()
+temp_df = pd.DataFrame(columns=['profile_type','weight','run','accuracy','average'])
 for i in increments:
     total = 0.0 #The total score
     social_profile.g = i #Set the profile's social weight to the value in the increment
