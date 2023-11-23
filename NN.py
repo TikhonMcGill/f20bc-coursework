@@ -21,7 +21,7 @@ class NeuralNetwork:
         # Initialize the weights and biases for the layers
 
         #1. Initialize random weights for each layer
-        self.weights = [np.random.rand(self.layer_sizes[i], self.layer_sizes[i+1]) for i in range(len(self.layer_sizes) - 1)]
+        self.weights = [np.zeros((self.layer_sizes[i], self.layer_sizes[i+1])) for i in range(len(self.layer_sizes) - 1)]
         #2. Initialize an array of biases of 0 for each layer (except for the output layer)
         self.biases = [np.zeros((1, size)) for size in self.layer_sizes[1:]]
 
