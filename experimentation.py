@@ -79,6 +79,8 @@ for i in increments:
     temp_df['average'] = social_average_accuracy
     results_df = pd.concat([results_df,temp_df])
     #f.write("\tAverage accuracy for Social Weight of %.2f, after %d runs: %.3f%%\n" % (i,no_runs,social_average_accuracy))
+
+#moved to a different file to run on another machine, since this would have taken 1hour 30mins all together and multithreading is not a part of this project
 '''
 #f.write("Experimenting with Global Weights:\n")
 #Carry out experiments with Global Weight - keep cognitive & social weights at default value, 1.25
