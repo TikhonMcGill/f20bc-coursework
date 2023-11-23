@@ -21,7 +21,7 @@ dataset = pd.read_csv("data_banknote_authentication.txt") #Load the dataset
 labels = dataset.iloc[:, -1] #store labels from testing data before removing them
 dataset.drop(columns=dataset.columns[len(dataset.columns)-1], inplace=True) #Remove labels from testing data
 
-increments = [0.25,0.5,0.75,1.0,1.25,1.5,1.75,2.0] #The increments for the different PSO Weights
+increments = [0.25,0.5,0.75,1.0,1.25,1.5] #The increments for the different PSO Weights
 
 no_runs = 10 #The number of times to repeat each experiment, to get an average, to compensate for stochasticity
 
@@ -29,12 +29,16 @@ no_runs = 10 #The number of times to repeat each experiment, to get an average, 
 experiments_to_do = 3 * len(increments) * no_runs #The total number of experiments to do
 experiments_done = 0
 
+#use pandas for easier calculations and storage of information
+results_df = pd.DataFrame(columns=['profile_type','weight','run','accuracy','average'])
 
-f = open("experiment_results.txt","w") #Open a file for writing experiment results into
+
+#f = open("experiment_results.txt","w") #Open a file for writing experiment results into
 
 #Carry out experiments with Cognitive Weight - keep social & global weights at default value, 1.25
-f.write("Experimenting with Cognitive Weights:\n")
+#f.write("Experimenting with Cognitive Weights:\n")
 cognitive_profile = create_default_profile()
+temp_df = pd.DataFrame(columns=['profile_type','weight','run','accuracy','average'])
 for i in increments:
     total = 0.0 #The total score
     cognitive_profile.b = i #Set the profile's cognitive weight to the value in the increment
@@ -42,17 +46,20 @@ for i in increments:
         new_pso = ParticleSwarmOptimization(cognitive_profile,dataset,labels)
         new_pso.pso()
         experiments_done += 1
+        temp_df.loc[len(temp_df)] = {'profile_type' : 'cognitive', 'weight' : i, 'run': x, 'accuracy': new_pso.global_best}
 
         total += new_pso.global_best #Add the global best accuracy of the PSO to the total
 
         print("Did %d out of %d experiments" % (experiments_done,experiments_to_do))
     
     cognitive_average_accuracy = total / no_runs #Get the average accuracy
-
-    f.write("\tAverage accuracy for Cognitive Weight of %.2f, after %d runs: %.3f%%\n" % (i,no_runs,cognitive_average_accuracy))
+    temp_df['average'] = cognitive_average_accuracy
+    results_df = pd.concat([results_df,temp_df])
+    #print(results_df)
+    #f.write("\tAverage accuracy for Cognitive Weight of %.2f, after %d runs: %.3f%%\n" % (i,no_runs,cognitive_average_accuracy))
 
 #Carry out experiments with Social Weight - keep cognitive & global weights at default value, 1.25
-f.write("Experimenting with Social Weights:\n")
+#f.write("Experimenting with Social Weights:\n")
 social_profile = create_default_profile()
 for i in increments:
     total = 0.0 #The total score
@@ -61,16 +68,18 @@ for i in increments:
         new_pso = ParticleSwarmOptimization(social_profile,dataset,labels)
         new_pso.pso()
         experiments_done += 1
+        temp_df.loc[len(temp_df)] = {'profile_type' : 'Social', 'weight' : i, 'run': x, 'accuracy': new_pso.global_best}
 
         total += new_pso.global_best #Add the global best accuracy of the PSO to the total
 
         print("Did %d out of %d experiments" % (experiments_done,experiments_to_do))
     
     social_average_accuracy = total / no_runs #Get the average accuracy
+    temp_df['average'] = social_average_accuracy
+    results_df = pd.concat([results_df,temp_df])
+    #f.write("\tAverage accuracy for Social Weight of %.2f, after %d runs: %.3f%%\n" % (i,no_runs,social_average_accuracy))
 
-    f.write("\tAverage accuracy for Social Weight of %.2f, after %d runs: %.3f%%\n" % (i,no_runs,social_average_accuracy))
-
-f.write("Experimenting with Global Weights:\n")
+#f.write("Experimenting with Global Weights:\n")
 #Carry out experiments with Global Weight - keep cognitive & social weights at default value, 1.25
 global_profile = create_default_profile()
 for i in increments:
@@ -80,13 +89,16 @@ for i in increments:
         new_pso = ParticleSwarmOptimization(cognitive_profile,dataset,labels)
         new_pso.pso()
         experiments_done += 1
+        temp_df.loc[len(temp_df)] = {'profile_type' : 'Global', 'weight' : i, 'run': x, 'accuracy': new_pso.global_best}
 
         total += new_pso.global_best #Add the global best accuracy of the PSO to the total
 
         print("Did %d out of %d experiments" % (experiments_done,experiments_to_do))
     
     global_average_accuracy = total / no_runs #Get the average accuracy
+    temp_df['average'] = global_average_accuracy
+    results_df = pd.concat([results_df,temp_df])
+    #f.write("\tAverage accuracy for Global Weight of %.2f, after %d runs: %.3f%%\n" % (i,no_runs,global_average_accuracy))
 
-    f.write("\tAverage accuracy for Global Weight of %.2f, after %d runs: %.3f%%\n" % (i,no_runs,global_average_accuracy))
-
-f.close()
+#f.close()
+results_df.to_csv
