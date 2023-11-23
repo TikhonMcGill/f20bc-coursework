@@ -45,11 +45,11 @@ for i in increments:
 
         total += new_pso.global_best #Add the global best accuracy of the PSO to the total
 
-        print("Did %d out of %d experiments" % [experiments_done,experiments_to_do])
+        print("Did %d out of %d experiments" % (experiments_done,experiments_to_do))
     
     cognitive_average_accuracy = total / no_runs #Get the average accuracy
 
-    f.write("\tAverage accuracy for Cognitive Weight of %.2f, after %d runs: %.3f%%\n" % [i,no_runs,cognitive_average_accuracy])
+    f.write("\tAverage accuracy for Cognitive Weight of %.2f, after %d runs: %.3f%%\n" % (i,no_runs,cognitive_average_accuracy))
 
 #Carry out experiments with Social Weight - keep cognitive & global weights at default value, 1.25
 f.write("Experimenting with Social Weights:\n")
@@ -64,11 +64,11 @@ for i in increments:
 
         total += new_pso.global_best #Add the global best accuracy of the PSO to the total
 
-        print("Did %d out of %d experiments" % [experiments_done,experiments_to_do])
+        print("Did %d out of %d experiments" % (experiments_done,experiments_to_do))
     
     social_average_accuracy = total / no_runs #Get the average accuracy
 
-    f.write("\tAverage accuracy for Social Weight of %.2f, after %d runs: %.3f%%\n" % [i,no_runs,social_average_accuracy])
+    f.write("\tAverage accuracy for Social Weight of %.2f, after %d runs: %.3f%%\n" % (i,no_runs,social_average_accuracy))
 
 f.write("Experimenting with Global Weights:\n")
 #Carry out experiments with Global Weight - keep cognitive & social weights at default value, 1.25
@@ -83,10 +83,10 @@ for i in increments:
 
         total += new_pso.global_best #Add the global best accuracy of the PSO to the total
 
-        print("Did %d out of %d experiments" % [experiments_done,experiments_to_do])
+        print("Did %d out of %d experiments" % (experiments_done,experiments_to_do))
     
     global_average_accuracy = total / no_runs #Get the average accuracy
 
-    f.write("\tAverage accuracy for Global Weight of %.2f, after %d runs: %.3f%%\n" % [i,no_runs,global_average_accuracy])
+    f.write("\tAverage accuracy for Global Weight of %.2f, after %d runs: %.3f%%\n" % (i,no_runs,global_average_accuracy))
 
 f.close()
