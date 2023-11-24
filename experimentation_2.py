@@ -1,3 +1,8 @@
+'''
+This file is the global part of testing in experimentation.py this was split off to allow us to run the Tests on multiple machines to complete them in 30minutes instead of 1hr 30min
+this could of been done with multithreading, but this is outside the scope of the project and no other libraries are allowed.
+'''
+
 import pandas as pd
 from HyperparameterProfile import HyperparameterProfile
 from ParticleSwarmOptimization import ParticleSwarmOptimization
@@ -32,14 +37,13 @@ experiments_done = 0
 #use pandas for easier calculations and storage of information
 results_df = pd.DataFrame(columns=['profile_type','weight','run','accuracy','average'])
 
-temp_df = pd.DataFrame(columns=['profile_type','weight','run','accuracy','average'])
-
 #f.write("Experimenting with Global Weights:\n")
 #Carry out experiments with Global Weight - keep cognitive & social weights at default value, 1.25
 global_profile = create_default_profile()
 for i in increments:
     total = 0.0 #The total score
     global_profile.gl = i #Set the profile's global weight to the value in the increment
+    temp_df = pd.DataFrame(columns=['profile_type','weight','run','accuracy','average'])
     for x in range(no_runs):
         new_pso = ParticleSwarmOptimization(global_profile,dataset,labels)
         new_pso.pso()
@@ -52,7 +56,7 @@ for i in increments:
     
     global_average_accuracy = total / no_runs #Get the average accuracy
     temp_df['average'] = global_average_accuracy
-    results_df = pd.concat([results_df,temp_df])
+    results_df = pd.concat([results_df,temp_df],ignore_index=True)
     #f.write("\tAverage accuracy for Global Weight of %.2f, after %d runs: %.3f%%\n" % (i,no_runs,global_average_accuracy))
 
 #f.close()

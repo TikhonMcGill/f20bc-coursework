@@ -38,10 +38,10 @@ results_df = pd.DataFrame(columns=['profile_type','weight','run','accuracy','ave
 #Carry out experiments with Cognitive Weight - keep social & global weights at default value, 1.25
 #f.write("Experimenting with Cognitive Weights:\n")
 cognitive_profile = create_default_profile()
-temp_df = pd.DataFrame(columns=['profile_type','weight','run','accuracy','average'])
 for i in increments:
     total = 0.0 #The total score
     cognitive_profile.b = i #Set the profile's cognitive weight to the value in the increment
+    temp_df = pd.DataFrame(columns=['profile_type','weight','run','accuracy','average'])
     for x in range(no_runs):
         new_pso = ParticleSwarmOptimization(cognitive_profile,dataset,labels)
         new_pso.pso()
@@ -54,17 +54,17 @@ for i in increments:
     
     cognitive_average_accuracy = total / no_runs #Get the average accuracy
     temp_df['average'] = cognitive_average_accuracy
-    results_df = pd.concat([results_df,temp_df])
+    results_df = pd.concat([results_df,temp_df],ignore_index=True)
     #print(results_df)
     #f.write("\tAverage accuracy for Cognitive Weight of %.2f, after %d runs: %.3f%%\n" % (i,no_runs,cognitive_average_accuracy))
 
 #Carry out experiments with Social Weight - keep cognitive & global weights at default value, 1.25
 #f.write("Experimenting with Social Weights:\n")
 social_profile = create_default_profile()
-temp_df = pd.DataFrame(columns=['profile_type','weight','run','accuracy','average'])
 for i in increments:
     total = 0.0 #The total score
     social_profile.g = i #Set the profile's social weight to the value in the increment
+    temp_df = pd.DataFrame(columns=['profile_type','weight','run','accuracy','average'])
     for x in range(no_runs):
         new_pso = ParticleSwarmOptimization(social_profile,dataset,labels)
         new_pso.pso()
@@ -77,17 +77,18 @@ for i in increments:
     
     social_average_accuracy = total / no_runs #Get the average accuracy
     temp_df['average'] = social_average_accuracy
-    results_df = pd.concat([results_df,temp_df])
+    results_df = pd.concat([results_df,temp_df],ignore_index=True)
     #f.write("\tAverage accuracy for Social Weight of %.2f, after %d runs: %.3f%%\n" % (i,no_runs,social_average_accuracy))
 
-#moved to a different file to run on another machine, since this would have taken 1hour 30mins all together and multithreading is not a part of this project
-'''
+#can be moved to a different file to run on another machine, since this would have taken 1hour 30mins all together and multithreading is not a part of this project
+
 #f.write("Experimenting with Global Weights:\n")
 #Carry out experiments with Global Weight - keep cognitive & social weights at default value, 1.25
 global_profile = create_default_profile()
 for i in increments:
     total = 0.0 #The total score
     global_profile.gl = i #Set the profile's global weight to the value in the increment
+    temp_df = pd.DataFrame(columns=['profile_type','weight','run','accuracy','average'])
     for x in range(no_runs):
         new_pso = ParticleSwarmOptimization(global_profile,dataset,labels)
         new_pso.pso()
@@ -100,8 +101,8 @@ for i in increments:
     
     global_average_accuracy = total / no_runs #Get the average accuracy
     temp_df['average'] = global_average_accuracy
-    results_df = pd.concat([results_df,temp_df])
+    results_df = pd.concat([results_df,temp_df],ignore_index=True)
     #f.write("\tAverage accuracy for Global Weight of %.2f, after %d runs: %.3f%%\n" % (i,no_runs,global_average_accuracy))
-'''
+
 #f.close()
-results_df.to_csv('cognitive&social_results.csv')
+results_df.to_csv('results.csv')
