@@ -1,5 +1,7 @@
 import pandas as pd
 import numpy as np
+#used to create graphs not sure if we are allowed to leave this in here
+#import matplotlib.pyplot as plt 
 
 #load the cognitive and social results
 results1 = pd.read_csv("cognitive&social_results.csv")
@@ -29,3 +31,23 @@ for t in combined_results['profile_type'].unique():
         
 
 print(standard_deviation)
+'''
+These loops are for generating graphs, commented out incase we are not allowed to leave matplotlib as an import
+for t in standard_deviation['profile_type'].unique():
+    tmp_df = standard_deviation.loc[standard_deviation['profile_type'] == t]
+    #print(tmp_df)
+    tmp_df.plot(x = 'weight', y = 'average')
+    plt.title("Avearge accuracy for each weight for profile: " + t)
+    plt.xlabel("Weights")
+    plt.ylabel("Average Accuracy")
+    plt.show()
+
+for t in standard_deviation['profile_type'].unique():
+    tmp_df = standard_deviation.loc[standard_deviation['profile_type'] == t]
+    #print(tmp_df)
+    tmp_df.plot(x = 'weight', y = 'standard_deviation')
+    plt.title("Standard Deviation for each weight for profile: " + t)
+    plt.xlabel("Weights")
+    plt.ylabel("Standard Deviation")
+    plt.show()
+'''
