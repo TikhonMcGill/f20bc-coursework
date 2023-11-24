@@ -28,4 +28,4 @@ profile5 = HyperparameterProfile([4,4,4,1],[actfunc.activation_elu,actfunc.activ
 profile6 = HyperparameterProfile([4,4,4,1],[actfunc.activation_logistic,actfunc.activation_logistic,actfunc.activation_logistic],
                                  0.7,1.2,1.8,1.9,100,10,2)
 
-profileArchitecture1 = HyperparameterProfile([4,3,2,1],[actfunc.activation_relu,actfunc.activation_relu,actfunc.activation_logistic],0.7,1.3,1.2,0.8,300,20,4)
+profileArchitecture1 = HyperparameterProfile([4,3,2,1],[actfunc.activation_relu,actfunc.activation_relu,actfunc.activation_logistic],1.25,0.75,0.25,0.5,300,20,4)
